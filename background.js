@@ -1,5 +1,3 @@
-// Replace "chrome." with "chrome." to make this add-on work with Chromium browsers
-
 // Set up context menu
 var contextMenuTitle = chrome.i18n.getMessage("extensionName");
 chrome.contextMenus.create({
