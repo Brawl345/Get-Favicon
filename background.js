@@ -1,8 +1,8 @@
-// Replace "browser." with "chrome." to make this add-on work with Chromium browsers
+// Replace "chrome." with "chrome." to make this add-on work with Chromium browsers
 
 // Set up context menu
-var contextMenuTitle = browser.i18n.getMessage("extensionName");
-browser.contextMenus.create({
+var contextMenuTitle = chrome.i18n.getMessage("extensionName");
+chrome.contextMenus.create({
   id: "5678-get-favicon",
   title: contextMenuTitle,
   contexts: ["page"]
@@ -10,8 +10,8 @@ browser.contextMenus.create({
 
 // Download the favicon, if it exists
 function downloadFavicon(faviconUrl) {
-  if (typeof faviconUrl != "undefined") {
-    browser.downloads.download({
+  if (faviconUrl) {
+    chrome.downloads.download({
         url: faviconUrl,
         conflictAction: 'uniquify'
     });
@@ -24,20 +24,19 @@ function onError(error) {
 }
 
 function queryTab() {
-  browser.tabs.query({
+  chrome.tabs.query({
     active: true,
     currentWindow: true
   }, function(tabs) {
     // Since there can only be one active tab in one active window, 
     // the array has only one element
     var faviconUrl = tabs[0].favIconUrl;
-    console.log(faviconUrl)
     downloadFavicon(faviconUrl);
   });
 }
 
 // Do the action, if button/context menu entry is clicked
-browser.browserAction.onClicked.addListener(queryTab);
-browser.contextMenus.onClicked.addListener(function(info, tab) {
+chrome.browserAction.onClicked.addListener(queryTab);
+chrome.contextMenus.onClicked.addListener(function(info, tab) {
     downloadFavicon(tab.favIconUrl)
 });
