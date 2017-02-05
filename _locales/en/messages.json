@@ -1,0 +1,9 @@
+{
+  "extensionName": {
+    "message": "Get Favicon"
+  },
+
+  "extensionDescription": {
+    "message": "Downloads the sites' favicon."
+  }
+}
