@@ -5,5 +5,13 @@
 
   "extensionDescription": {
     "message": "Downloads the sites' favicon."
+  },
+  
+  "getCurrentFavicon": {
+    "message": "Download favicon of this tab"
+  },
+  
+  "getAllFavicons": {
+    "message": "Download favicon for all tabs of this window"
   }
 }

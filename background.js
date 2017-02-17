@@ -1,8 +1,16 @@
+// TODO: Custom folder?
 // Set up context menu
-var contextMenuTitle = chrome.i18n.getMessage("extensionName");
+var contextMenuTitle = chrome.i18n.getMessage("getCurrentFavicon");
 chrome.contextMenus.create({
   id: "5678-get-favicon",
   title: contextMenuTitle,
+  contexts: ["page"]
+});
+
+var contextMenuTitle_AllFavicons = chrome.i18n.getMessage("getAllFavicons");
+chrome.contextMenus.create({
+  id: "5678-get-faviconforall",
+  title: contextMenuTitle_AllFavicons,
   contexts: ["page"]
 });
 
@@ -10,8 +18,8 @@ chrome.contextMenus.create({
 function downloadFavicon(faviconUrl) {
   if (faviconUrl) {
     chrome.downloads.download({
-        url: faviconUrl,
-        conflictAction: 'uniquify'
+      url: faviconUrl,
+      conflictAction: 'uniquify'
     });
   }
 }
@@ -33,8 +41,23 @@ function queryTab() {
   });
 }
 
+function queryAllTabs() {
+  chrome.tabs.query({
+    currentWindow: true
+  }, function(tabs) {
+    for (i = 0; i < tabs.length; i++) {
+      var faviconUrl = tabs[i].favIconUrl;
+      downloadFavicon(faviconUrl);
+    }
+  });
+}
+
 // Do the action, if button/context menu entry is clicked
 chrome.browserAction.onClicked.addListener(queryTab);
 chrome.contextMenus.onClicked.addListener(function(info, tab) {
-    downloadFavicon(tab.favIconUrl)
+  if (info.menuItemId == "5678-get-favicon") {
+    downloadFavicon(tab.favIconUrl);
+  } else if (info.menuItemId == "5678-get-faviconforall") {
+    queryAllTabs();
+  }
 });
